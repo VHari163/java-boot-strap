@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #74b9ff, #a29bfe);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .game-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            color: #2d3436;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        p.description {
+            color: #636e72;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .input-section {
+            margin-bottom: 20px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            border: 2px solid #dfe6e9;
+            border-radius: 8px;
+            outline: none;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus {
+            border-color: #6c5ce7;
+        }
+
+        button {
+            width: 100%;
+            background-color: #6c5ce7;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: #5b4cc4;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .message {
+            margin-top: 20px;
+            font-weight: 600;
+            font-size: 16px;
+            min-height: 24px;
+        }
+
+        /* Dynamic Feedback Classes */
+        .too-low { color: #e67e22; }
+        .too-high { color: #e74c3c; }
+        .correct { color: #2ecc71; font-size: 18px; }
+        .error { color: #7f8c8d; }
+
+        .stats {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #b2bec3;
+        }
+
+        .hide {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <h1>Guess The Number!</h1>
+        <p class="description">I am thinking of a number between 1 and 100. Can you guess it?</p>
+
+        <div class="input-section">
+            <input type="number" id="guessInput" placeholder="Enter number" min="1" max="100">
+            <button id="submitBtn">Submit Guess</button>
+            <button id="restartBtn" class="hide">Play Again</button>
+        </div>
+
+        <div class="message" id="feedbackMsg"></div>
+        <div class="stats" id="statsPanel">Attempts: 0</div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const guessInput = document.getElementById('guessInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        const feedbackMsg = document.getElementById('feedbackMsg');
+        const statsPanel = document.getElementById('statsPanel');
+
+        // Game State Variables
+        let targetNumber;
+        let attempts;
+        let gameOver;
+
+        // Initialize/Reset Game state
+        function initGame() {
+            targetNumber = Math.floor(Math.random() * 100) + 1; // 1 to 100
+            attempts = 0;
+            gameOver = false;
+            
+            feedbackMsg.textContent = "";
+            feedbackMsg.className = "message";
+            statsPanel.textContent = "Attempts: 0";
+            guessInput.value = "";
+            guessInput.disabled = false;
+            
+            submitBtn.classList.remove('hide');
+            restartBtn.classList.add('hide');
+            guessInput.focus();
+        }
+
+        // Handle logical turn evaluation
+        function checkGuess() {
+            if (gameOver) return;
+
+            const userGuess = parseInt(guessInput.value);
+
+            // Input Validation
+            if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
+                feedbackMsg.textContent = "⚠️ Please enter a number between 1 and 100.";
+                feedbackMsg.className = "message error";
+                return;
+            }
+
+            attempts++;
+            statsPanel.textContent = `Attempts: ${attempts}`;
+
+            if (userGuess === targetNumber) {
+                // Win state
+                feedbackMsg.textContent = `🎉 Correct! The number was ${targetNumber}.`;
+                feedbackMsg.className = "message correct";
+                endGame();
+            } else if (userGuess < targetNumber) {
+                // Too Low
+                feedbackMsg.textContent = "📉 Too low! Try a higher number.";
+                feedbackMsg.className = "message too-low";
+            } else {
+                // Too High
+                feedbackMsg.textContent = "📈 Too high! Try a lower number.";
+                feedbackMsg.className = "message too-high";
+            }
+
+            // Clear input for next guess automatically
+            guessInput.value = "";
+            guessInput.focus();
+        }
+
+        function endGame() {
+            gameOver = true;
+            guessInput.disabled = true;
+            submitBtn.classList.add('hide');
+            restartBtn.classList.remove('hide');
+            restartBtn.focus();
+        }
+
+        // Event Listeners
+        submitBtn.addEventListener('click', checkGuess);
+        restartBtn.addEventListener('click', initGame);
+
+        // Allow pressing "Enter" key to submit guess
+        guessInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                checkGuess();
+            }
+        });
+
+        // Start the game loop on page load
+        initGame();
+    </script>
+</body>
+</html>

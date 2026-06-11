@@ -130,3 +130,58 @@ cook();
 
 */
 
+function dishwash(dosa){
+    console.log("we had "+dosa+" today ");
+}
+
+dishwash(6);
+
+/*example*//*
+function num(n){
+    if(n>10){
+        return;
+    }
+    console.log(n);
+    n+=1;
+    num(n);
+}
+
+num(4);
+*/
+
+
+
+/* function guessing game */
+function guess(num1){
+    let n = number(prompt("enter the number :"))
+    if(guessnum == num){
+        console.log("congratilutions you got it ");
+    }else if(guessnum < num){
+        console.log("guess low number to get it");
+        guess(n);
+    }else{
+        console.log("guess the big number to ge it");
+        guess(n);
+    }
+}
+let number=Math.floor(Math.random()*100)+1;
+guess(n);
+
+
+/*
+
+let chocolate= ["melodi","fivestsr","kitkat","kachamango","darkchocolate","kavya"];
+let salse = {
+    kanna : chocolate[0],
+    kavya : chocolate[1],
+    arun : chocolate[2],
+    vishwa : chocolate[3],
+    visa : chocolate[4],
+    hari : chocolate[5]
+};
+
+console.log(salse);
+
+console.log(salse.hari);
+
+*/
