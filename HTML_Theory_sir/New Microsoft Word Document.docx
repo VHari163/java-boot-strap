@@ -1,3 +1,11 @@
+                to clear the terminal use shortcut as 
+                        cls (or) ctrl+L
+
+
+
+
+
+
 
 
                         Required things fro job
@@ -11,6 +19,7 @@
                         ->linkden
                         ->mail 
                         ->github
+
 
 
 
@@ -69,6 +78,13 @@ Day -2 (css and effects nad finally git instructions)
 
 Day -3 (git instructions continuation )
         
+        -> git init                             /*initilizes the git for the local folder
+        -> git add .                            /*creates the mode for the files which are resented int he local folder
+        -> git commit -m "Initial commit"       /*sends a comment to git for user knowledge
+        -> git branch -M main                   /*makes the branch master to the main
+        -> git remote add origin https://github.com/your-username/your-repo-name.git /*and this send the location to store the local files into the git repo
+        -> git push -u origin main              /*finally it pushes the local files tot eh repo 
+        -> git status                           /*it displats the status if the files are up to date are not
 
 Day -4 (java script basics)
         =>js is like a python
@@ -79,3 +95,4 @@ Day -4 (java script basics)
                 -> no name starts with numbers
                 -> number can be place afterhte letter or a word
                 -> no spaces or allowed
+        
