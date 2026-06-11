@@ -1,0 +1,43 @@
+/* *{
+    background : linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
+}
+
+
+*{
+    height : 500cm ;
+    background: linear-gradient(from top,180deg, #B5BAFF, #E0C375);
+    
+}
+
+
+*{
+    height : 10cm ;
+    background : radial-gradient(circle , #ff0000, #00ff00, #0000ff);
+}
+
+
+*{
+    height : 20cm ;
+    background : conic-gradient(#B5BAFF, #E0C375);
+}
+
+*{
+    background : linear-gradient(90deg, #D9F9DF, #B5BAFF, #FFEF91);
+}
+*/
+body{
+    margin : auto ;
+    width : 80% ;
+}
+
+h1{
+    display : flex ;
+    justify-content : center ;
+}
+
+ul{
+    display : flex ;
+    align-items : center ;
+    justify-content : space-evenly ; /*justify-between : space*//*justyfy-content : space-evenly*/
+}
+

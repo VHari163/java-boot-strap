@@ -1,0 +1,81 @@
+
+
+                        Required things fro job
+
+                        ->personal web link 
+                        ->go lang
+                        ->react node.js
+                        ->fast api
+                        ->sprong frame work
+                        ->fluter 
+                        ->linkden
+                        ->mail 
+                        ->github
+
+
+
+Day - 1 (html tags and basics)
+
+html -> hyper text marup language
+        type shift 1 and then enter firstly entring
+        tags --->
+                <html> </html>              starts and ends at the file for an web page
+                <p> </P>                    paragraph tag where it shows as the paragraph
+                <h1> </h1>                  heding tags where it consists of 6 types as h1 h2 h3 ... till h6 ti cjange only the sizes not the text
+                <sup> </sup>                super class where the text can be as a power of the word
+                <sub> </sub>                sub class where the text can be as a base of the word
+                <u> </u>                    underline tag 
+                <b> </b>                    bold tag to get the text as bold
+                <big> </big>                makes the text as big size
+                <small> </small>            makes the text as the small size
+                <i> </i>                    italic to makr the text as the itallic
+                <ol> </ol>                  this tag makes as the list if items as the ordered list 
+                <ul> </ul>                  this tag makes as the list if items as the unordered list
+                <table> </table>            creates a table without any margins this should be coded inside the paragraph tags
+                <th> </th>                  this is the tag about the table heading 
+                <tr> </tr>                  this tag is about the table row 
+
+        Day -1 links
+
+        Links 
+                https://www.onlinegdb.com/dQ_TJEat8!
+                https://www.onlinegdb.com/JEkCxHuQb1
+                https://www.onlinegdb.com/hxk6pOGjhO
+
+
+Day -2 (css and effects nad finally git instructions)
+        effect-> 
+                hover
+        transition ->
+                first thing delay time
+                second thing format
+                        ->ease
+                                -> ease        slower process
+                                -> ease in     starts slower and ends faster
+                        ->linear process is similar for stating and stoping
+                delaing the initing the process
+        transform -> 
+                translate(x,y)
+                        just moves a photo
+                rotate(degree)
+                        rotates the photo we want ot mention with the degree
+                scale()
+                        zomes in and out mentioning using the values as numbers with points
+                skew()
+                        mentioning in the degrees and it turns into daimond shapes like upper thing into left and the roght thing into the right side
+        border style->
+                groove
+
+
+Day -3 (git instructions continuation )
+        
+
+Day -4 (java script basics)
+        =>js is like a python
+
+        =>variables
+                ->var ->const ->num
+                -> a variable should be a letter or a word
+                -> no name starts with numbers
+                -> number can be place afterhte letter or a word
+                -> no spaces or allowed

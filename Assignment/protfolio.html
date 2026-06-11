@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <style> 
+        /* Reset and Base Styles */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            color: #333333; /* Soft dark gray instead of harsh solid black */
+            font-family: 'Times New Roman', Times, serif;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 1. Safe Low-Contrast Background Strategy */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: url("Hari.jpg");
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            filter: contrast(30%) brightness(1.1); /* Lower contrast, slightly brighter background */
+        }
+
+        /* 2. Main Professional Content Border Wrapper */
+        .portfolio-container {
+            max-width: 800px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.92); /* Semi-transparent white card background */
+            border: 2px solid #222222; /* Sleek, crisp professional border */
+            border-radius: 8px; /* Slightly rounded elegant corners */
+            padding: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Adds professional depth */
+        }
+
+        /* Elements Formatting */
+        h1 {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 2.5rem;
+        }
+
+        h1, h2, h3 {
+            color: #111111;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: #cccccc;
+            margin: 25px 0;
+        }
+
+        p {
+            line-height: 1.6;
+            font-size: 1.1rem;
+            text-align: justify;
+        }
+
+        ul {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        /* Profile Image Layout */
+        .profile-img {
+            display: block;
+            margin: 0 auto;
+            border: 4px solid #222222;
+            border-radius: 50%; /* Modern clean circle */
+            width: 150px;
+            height: 150px;
+            object-fit: cover; /* Prevents image squishing */
+        }
+
+        /* Modern Professional Table Customization */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 1rem;
+        }
+
+        th, td {
+            border: 1px solid #444444; /* Clean thin lines instead of thick blocks */
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.02); /* Subtle row highlighting */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="portfolio-container">
+        
+        <img src="/Assignment/Hari.jpg" class="profile-img" alt="Profile picture">
+        
+        <h1>Hari</h1>
+        <p style="margin-left: auto; margin-right: auto; text-align: center;">Mail ID : vinayakav820@gmail.com | Contact : 9515569533 | LinkedIn : V Hari</p>
+        <hr> 
+        
+        <h3 style="text-align: center;"><u>About Me</u></h3>
+        <p>
+            I am <strong>Hari</strong>. I am currently pursuing my 3<sup>rd</sup> year <strong>B.Tech</strong> on the campus of <strong>MOTHER THERESA ENGINEERING COLLEGE</strong>, MELOMOI.<br><br>
+            I am a passionate learner, and I have a keen interest in web development and programming. I enjoy exploring new technologies and enhancing my skills in the field of computer science.
+        </p>
+        
+        <hr>
+        
+        <h3 style="text-align: center;"><u>Skills</u></h3>
+        <ul>
+            <li><strong>Programming Languages:</strong> C, Java, Python, HTML, CSS</li>
+            <li><strong>Web Development:</strong> HTML, CSS, JavaScript</li>
+            <li><strong>Database Management:</strong> SQL</li>
+            <li><strong>Version Control:</strong> Git</li>
+        </ul>
+        
+        <hr>
+        
+        <h3 style="text-align: center;"><u>Achievements</u></h3>
+        <ul>
+            <li>Participated in Hackathon - An Intra College Competition</li>
+            <li>Won 1st place in Coding Challenge at College Fest</li>
+            <li>Completed a Web Development Course on Coursera</li>
+        </ul>
+        
+        <hr>
+        
+        <h3 style="text-align: center;"><u>Qualifications</u></h3>                
+        <table>
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Course</th>
+                    <th>Institution</th>
+                    <th>Year</th>
+                    <th>Percentage / CGPA</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1.</td>
+                    <td>B.Tech</td>
+                    <td>MOTHER THERESA INSTITUTE OF ENGINEERING COLLEGE</td>
+                    <td>2024-2028</td>
+                    <td>8.5 CGPA</td>
+                </tr>
+                <tr>
+                    <td>2.</td>
+                    <td>Higher Secondary Education</td>
+                    <td>IRM COLLEGE</td>
+                    <td>2022-2024</td>
+                    <td>85%</td>
+                </tr>
+                <tr>
+                    <td>3.</td>
+                    <td>Secondary Education</td>
+                    <td>VIJAYAVANI HIGH SCHOOL</td>
+                    <td>2010-2022</td>
+                    <td>90%</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</body>
+</html>

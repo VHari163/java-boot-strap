@@ -1,0 +1,28 @@
+body{
+
+    background-color: rgb(189, 197, 200);
+    margin: 20px 30px 40px 50px;
+}
+img{
+    
+    display: block;       /* This tells the browser the image is a solid block */
+    margin-left: auto;    /* Pushes equal space on the left side */
+    margin-right: auto;   /* Pushes equal space on the right side */
+    margin-bottom: 20px;  /* Optional: Adds a little breathing room between the image and the text */
+    border : solid; /* Adds a red border around the image */
+    border-radius : 50%; /* Makes the border circular */
+    /*justify-content : center;
+    align-items : center;
+    display : flex;
+    width : 200px;
+    height : 150px;
+    position : relative; /* can be able to change top left bottom roght */ /*position : static;   constant thing*/ /*position : absolute; */  /*position : fixed; it can be make as a background*/ 
+    /*top : 20px;
+    left : 150px /*top : 20px;*/ /*bottom : 20px;*/ /*left : 20px;*/ /*right : 20px;*/ /*and we can use with a negative value also like top : -20px; and also in the centimeters */
+}
+h1{
+    
+    text-align : center;
+    background-color: rgb(189, 197, 200);
+    margin: 20px 30px 40px 50px;
+}

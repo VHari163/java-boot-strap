@@ -1,0 +1,35 @@
+tr{
+    border-style : solid;
+    border-color : black;
+    border-width : 50px;
+}
+h1{
+    text-align : center;
+}
+img{
+    border-style : solid;
+    border-color : black;
+    border-width : 5px;
+    display : block;
+    margin-left : auto;
+    margin-right : auto;
+    border-radius : 50%;
+    padding : 10px;
+
+}
+img{
+   transition : transform 60s /**/ease-in 5s /*delay seconds*/; 
+
+}
+img{
+    transform : rotate(360deg);
+    border-style : solid;
+    border-color : black;
+    border-width : 5px;
+    display : block;
+    margin-left : auto;
+    margin-right : auto;
+    border-radius : 50%;
+    padding : 10px;
+
+} 

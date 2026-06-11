@@ -1,0 +1,136 @@
+/* ==========================================================================
+   1. Global Styles & Typography
+   ========================================================================== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+    color: #333333;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* Headings */
+h1 {
+    color: #1e3a8a; /* Deep blue professional tone */
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+}
+
+h2 {
+    color: #4b5563; /* Subtle slate grey */
+    font-size: 1.75rem;
+    margin-top: 20px;
+}
+
+/* Horizontal Rule */
+hr {
+    border: 0;
+    height: 2px;
+    background-image: linear-gradient(to right, #1e3a8a, #e5e7eb);
+    margin-bottom: 25px;
+}
+
+/* Paragraph styling */
+p {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+/* ==========================================================================
+   2. Lists Layout (Side-by-Side View)
+   ========================================================================== */
+/* Setting up layout so your bulleted and numbered lists sit cleanly */
+ul, ol {
+    background-color: #ffffff;
+    padding: 20px 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+li {
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #374151;
+}
+
+/* ==========================================================================
+   3. Table Styling (Semester Grades)
+   ========================================================================== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 1rem;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    overflow: hidden; /* Ensures rounded corners show up */
+} 
+
+th {
+    background-color: #1e3a8a;
+    color: #ffffff;
+    text-align: left;
+    padding: 12px 15px;
+    font-weight: 600;
+}
+
+td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #dddddd;
+    color: #4b5563;
+}
+
+/* Alternating row colors for better readability */
+tr:nth-of-type(even) {
+    background-color: #f3f4f6;
+}
+
+/* Hover effect on rows */
+tr:hover {
+    background-color: #e0e7ff;
+    transition: background-color 0.2s ease;
+}
+
+/* ==========================================================================
+   4. Links, Images & Interactive Elements
+   ========================================================================== */
+a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+
+img {
+    display: block;
+    margin: 20px 0;
+    
+    /* 1. Force the image to be a perfect square */
+    width: 200px;
+    height: 200px;
+    object-fit: cover; /* Prevents the image from stretching or looking squished */
+    
+    /* 2. Turn the square into a perfect circle */
+    border-radius: 50%; 
+    
+    /* Keeps your cool styling */
+    box-shadow: 0 4px 10px #de1212e4;
+}
+/*img {
+    display: block;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    max-width: 100%; /* Ensures responsiveness */
+   /* height: auto;
+}*/
