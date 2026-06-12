@@ -151,7 +151,7 @@ num(4);
 
 
 
-/* function guessing game */
+/* using function number guessing game */
 function guess(num1){
     let n = number(prompt("enter the number :"))
     if(guessnum == num){
