@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Grid: Adaptive Protocol Break</title>
+    <style>
+        :root {
+            --bg-color: #0d0e15;
+            --panel-bg: rgba(255, 255, 255, 0.03);
+            --border-glow: rgba(0, 242, 254, 0.2);
+            --neon-cyan: #00f2fe;
+            --neon-green: #00ff87;
+            --neon-red: #ff0055;
+            --tile-inactive: rgba(255, 255, 255, 0.07);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+            background-size: 40px 40px;
+            transform: rotate(15deg);
+            z-index: 1;
+        }
+
+        .game-wrapper {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 650px;
+            padding: 20px;
+        }
+
+        header {
+            width: 100%;
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        h1 {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            font-weight: 600;
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+
+        #level { color: var(--neon-cyan); text-shadow: 0 0 8px rgba(0,242,254,0.4); }
+        #timer { color: var(--neon-red); text-shadow: 0 0 8px rgba(255,0,85,0.4); }
+        #score { color: var(--neon-green); text-shadow: 0 0 8px rgba(0,255,135,0.4); }
+
+        .board-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .endpoint {
+            width: 50px;
+            height: 50px;
+            background: var(--panel-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+
+        .endpoint.source { color: var(--neon-cyan); border-color: var(--neon-cyan); box-shadow: 0 0 12px var(--border-glow); }
+        .endpoint.core { color: var(--neon-green); border-color: var(--neon-green); }
+        .endpoint.core.powered { box-shadow: 0 0 20px var(--neon-green); background: rgba(0, 255, 137, 0.1); }
+
+        #board {
+            flex-grow: 1;
+            aspect-ratio: 1 / 1;
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 12px;
+            display: grid;
+            gap: 6px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .tile {
+            background: var(--tile-inactive);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;
+        }
+
+        .tile:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(0, 242, 254, 0.3);
+        }
+
+        .pipe {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.15);
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
+
+        .pipe.center { width: 6px; height: 6px; border-radius: 50%; }
+        .pipe.north { top: 0; left: calc(50% - 3px); width: 6px; height: 50%; }
+        .pipe.south { bottom: 0; left: calc(50% - 3px); width: 6px; height: 50%; }
+        .pipe.east { right: 0; top: calc(50% - 3px); height: 6px; width: 50%; }
+        .pipe.west { left: 0; top: calc(50% - 3px); height: 6px; width: 50%; }
+
+        .tile.powered .pipe { background: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan); }
+        .tile.winning-path .pipe { background: var(--neon-green); box-shadow: 0 0 12px var(--neon-green); }
+
+        /* Multi-functional Screen overlays */
+        .screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(13, 14, 21, 0.98);
+            backdrop-filter: blur(14px);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            border-radius: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .screen.active { opacity: 1; pointer-events: auto; }
+        .screen h2 { font-size: 1.8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
+        
+        .screen.setup h2 { color: var(--neon-cyan); text-shadow: 0 0 10px rgba(0,242,254,0.3); }
+        .screen.win h2 { color: var(--neon-green); text-shadow: 0 0 15px rgba(0,255,137,0.3); }
+        .screen.lose h2 { color: var(--neon-red); text-shadow: 0 0 15px rgba(255,0,85,0.3); }
+
+        /* Setup Interactive Form styling */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            max-width: 300px;
+            text-align: left;
+        }
+
+        label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        select, input {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px 15px;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--neon-cyan);
+        }
+
+        select option {
+            background: var(--bg-color);
+            color: #fff;
+        }
+
+        .btn {
+            background: transparent;
+            border: 1px solid var(--neon-cyan);
+            color: #fff;
+            padding: 12px 35px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.25s;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.1);
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: var(--neon-cyan);
+            color: var(--bg-color);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-wrapper">
+        <header>
+            <h1>Protocol Break</h1>
+            <div class="stats">
+                <div>LVL: <span id="level">1</span></div>
+                <div>SWEEP: <span id="timer">--</span></div>
+                <div>SCORE: <span id="score">0</span></div>
+            </div>
+        </header>
+
+        <div class="board-container">
+            <div id="src-node" class="endpoint source">SRC</div>
+            
+            <div style="position: relative; flex-grow: 1; aspect-ratio: 1/1;">
+                <div id="board"></div>
+
+                <div id="setup-screen" class="screen setup active">
+                    <h2>Initialization Protocol</h2>
+                    <p>Configure interface options to initiate terminal link.</p>
+                    
+                    <div class="form-group">
+                        <label for="user-age">Operator Age</label>
+                        <input type="number" id="user-age" min="5" max="100" value="18">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="start-difficulty">Starting Clearance</label>
+                        <select id="start-difficulty">
+                            <option value="easy">Level 1: Novice Link</option>
+                            <option value="medium">Level 2: Cybersecurity Tech</option>
+                            <option value="hard">Level 3: Core Administrator</option>
+                        </select>
+                    </div>
+
+                    <button class="btn" onclick="processSetupAndStart()">Establish Link</button>
+                </div>
+
+                <div id="win-screen" class="screen win">
+                    <h2>Mainframe Breached</h2>
+                    <p id="win-message">Security protocols bypassed successfully.</p>
+                    <button class="btn" onclick="nextLevel()">Advance Level</button>
+                </div>
+
+                <div id="lose-screen" class="screen lose">
+                    <h2>Trace Detected</h2>
+                    <p>System locked down by firewall sweeps.</p>
+                    <button class="btn" onclick="returnToSetup()">Reboot Panel</button>
+                </div>
+            </div>
+
+            <div id="core-node" class="endpoint core">CORE</div>
+        </div>
+    </div>
+
+    <script>
+        const boardElement = document.getElementById('board');
+        const levelElement = document.getElementById('level');
+        const timerElement = document.getElementById('timer');
+        const scoreElement = document.getElementById('score');
+        const srcNode = document.getElementById('src-node');
+        const coreNode = document.getElementById('core-node');
+        
+        const setupScreen = document.getElementById('setup-screen');
+        const winScreen = document.getElementById('win-screen');
+        const loseScreen = document.getElementById('lose-screen');
+        const winMessage = document.getElementById('win-message');
+
+        // Core Configuration Matrix Variable Tracks
+        let currentLevel = 1;
+        let gridSize = 4;
+        let timer = 40;
+        let score = 0;
+        let grid = [];
+        let gameInterval = null;
+        let isGameActive = false;
+
+        let userAge = 18;
+        let chosenClearance = 'easy';
+
+        let entryRow = 1;
+        let exitRow = 2;
+
+        const TILE_TYPES = [
+            { name: 'straight', pipes: [true, false, true, false] }, 
+            { name: 'corner', pipes: [false, true, true, false] },  
+            { name: 't-shape', pipes: [true, true, true, false] },   
+            { name: 'cross', pipes: [true, true, true, true] }       
+        ];
+
+        class Tile {
+            constructor(row, col, complexityPool) {
+                this.row = row;
+                this.col = col;
+                
+                // Pick tile structural layouts based strictly on target user profiling rulesets
+                const blueprint = complexityPool[Math.floor(Math.random() * complexityPool.length)];
+                this.pipes = [...blueprint.pipes];
+                this.name = blueprint.name;
+                
+                const turns = Math.floor(Math.random() * 4);
+                for (let i = 0; i < turns; i++) { this.rotatePipes(); }
+                this.currentRotation = turns * 90;
+                
+                this.isPowered = false;
+                this.isWinning = false;
+                this.element = this.createDOMElement();
+            }
+
+            createDOMElement() {
+                const tileDiv = document.createElement('div');
+                tileDiv.className = 'tile';
+                tileDiv.style.transform = `rotate(${this.currentRotation}deg)`;
+
+                const center = document.createElement('div');
+                center.className = 'pipe center';
+                tileDiv.appendChild(center);
+
+                if (this.pipes[0]) this.createPipeBranch(tileDiv, 'north');
+                if (this.pipes[1]) this.createPipeBranch(tileDiv, 'east');
+                if (this.pipes[2]) this.createPipeBranch(tileDiv, 'south');
+                if (this.pipes[3]) this.createPipeBranch(tileDiv, 'west');
+
+                tileDiv.addEventListener('click', () => this.rotate());
+                return tileDiv;
+            }
+
+            createPipeBranch(parent, direction) {
+                const branch = document.createElement('div');
+                branch.className = `pipe ${direction}`;
+                parent.appendChild(branch);
+            }
+
+            rotatePipes() {
+                const last = this.pipes.pop();
+                this.pipes.unshift(last);
+            }
+
+            rotate() {
+                if (!isGameActive) return;
+                this.currentRotation += 90;
+                this.element.style.transform = `rotate(${this.currentRotation}deg)`;
+                this.rotatePipes();
+                evaluateNetworkTopology();
+            }
+
+            updateVisualState() {
+                this.element.classList.toggle('powered', this.isPowered);
+                this.element.classList.toggle('winning-path', this.isWinning);
+            }
+        }
+
+        // Processes custom settings input fields on start click
+        function processSetupAndStart() {
+            userAge = parseInt(document.getElementById('user-age').value) || 18;
+            chosenClearance = document.getElementById('start-difficulty').value;
+
+            // map user's selected initial choice to starting level values
+            if (chosenClearance === 'easy') currentLevel = 1;
+            if (chosenClearance === 'medium') currentLevel = 2;
+            if (chosenClearance === 'hard') currentLevel = 3;
+
+            score = 0;
+            scoreElement.textContent = score;
+            setupScreen.classList.remove('active');
+            
+            initGame();
+        }
+
+        // Adaptive engine setting properties tailored to Age combined with Levels
+        function updateAdaptiveDifficulty() {
+            // Step 1: Base settings depending on level rank
+            if (currentLevel === 1) { gridSize = 4; timer = 50; }
+            else if (currentLevel === 2) { gridSize = 5; timer = 45; }
+            else if (currentLevel === 3) { gridSize = 6; timer = 40; }
+            else if (currentLevel === 4) { gridSize = 7; timer = 35; }
+            else { gridSize = 8; timer = Math.max(30 - currentLevel, 15); }
+
+            // Step 2: Fine-tune difficulty algorithms using age tracking metrics
+            if (userAge < 12) {
+                // Give kids longer reaction countdown windows and smaller board sizes
+                timer += 15;
+                if (gridSize > 6) gridSize = 6; 
+            } else if (userAge >= 30) {
+                // Sharper parameters for veterans
+                timer = Math.max(timer - 5, 12);
+            }
+
+            entryRow = Math.floor(gridSize / 3);
+            exitRow = Math.floor(gridSize * 2 / 3);
+        }
+
+        function getComplexityPool() {
+            // Kids get fewer complex structural forks (like crossroads and T-shapes)
+            if (userAge < 12) {
+                return [TILE_TYPES[0], TILE_TYPES[0], TILE_TYPES[1], TILE_TYPES[1]]; // Dominantly straight lines and simple turns
+            }
+            return TILE_TYPES; // Full mix for teens and adults
+        }
+
+        function initGame() {
+            clearInterval(gameInterval);
+            updateAdaptiveDifficulty();
+
+            boardElement.innerHTML = '';
+            boardElement.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+            boardElement.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
+            
+            grid = [];
+            isGameActive = true;
+            
+            winScreen.classList.remove('active');
+            loseScreen.classList.remove('active');
+            coreNode.classList.remove('powered');
+            
+            levelElement.textContent = currentLevel;
+            timerElement.textContent = `${timer}s`;
+
+            const complexityPool = getComplexityPool();
+
+            // Construct adjusted tiles matching procedural profiles
+            for (let r = 0; r < gridSize; r++) {
+                const rowArray = [];
+                for (let c = 0; c < gridSize; c++) {
+                    const tile = new Tile(r, c, complexityPool);
+                    boardElement.appendChild(tile.element);
+                    rowArray.push(tile);
+                }
+                grid.push(rowArray);
+            }
+
+            // Reposition connection points to align with current grid layout
+            setTimeout(() => {
+                const tiles = document.querySelectorAll('.tile');
+                if(tiles.length > 0) {
+                    const tileSize = tiles[0].offsetHeight;
+                    const gap = 6;
+                    srcNode.style.transform = `translateY(${(entryRow * (tileSize + gap)) - (boardElement.offsetHeight/2) + (tileSize/2) + 12}px)`;
+                    coreNode.style.transform = `translateY(${(exitRow * (tileSize + gap)) - (boardElement.offsetHeight/2) + (tileSize/2) + 12}px)`;
+                }
+            }, 50);
+
+            evaluateNetworkTopology();
+            startCountdown();
+        }
+
+        function startCountdown() {
+            gameInterval = setInterval(() => {
+                if (!isGameActive) return;
+                timer--;
+                timerElement.textContent = `${timer}s`;
+
+                if (timer <= 0) {
+                    endGame(false);
+                }
+            }, 1000);
+        }
+
+        function evaluateNetworkTopology() {
+            for (let r = 0; r < gridSize; r++) {
+                for (let c = 0; c < gridSize; c++) {
+                    grid[r][c].isPowered = false;
+                    grid[r][c].isWinning = false;
+                }
+            }
+
+            const entryNode = grid[entryRow][0];
+            if (entryNode.pipes[3]) { traverseNetwork(entryRow, 0, 3); }
+
+            const exitNode = grid[exitRow][gridSize - 1];
+            let levelCleared = false;
+
+            if (exitNode.isPowered && exitNode.pipes[1]) { 
+                levelCleared = true;
+                markWinningPath(exitRow, gridSize - 1, 1);
+                coreNode.classList.add('powered');
+            } else {
+                coreNode.classList.remove('powered');
+            }
+
+            for (let r = 0; r < gridSize; r++) {
+                for (let c = 0; c < gridSize; c++) {
+                    grid[r][c].updateVisualState();
+                }
+            }
+
+            if (levelCleared) { endGame(true); }
+        }
+
+        function traverseNetwork(r, c, cameFromDirection) {
+            const currentTile = grid[r][c];
+            if (currentTile.isPowered) return; 
+            currentTile.isPowered = true;
+
+            const relativeMoves = [
+                { r: -1, c: 0, entryDir: 2 }, 
+                { r: 0, c: 1, entryDir: 3 },  
+                { r: 1, c: 0, entryDir: 0 },  
+                { r: 0, c: -1, entryDir: 1 }  
+            ];
+
+            for (let i = 0; i < 4; i++) {
+                if (currentTile.pipes[i]) { 
+                    const move = relativeMoves[i];
+                    const nextR = r + move.r;
+                    const nextC = c + move.c;
+
+                    if (nextR >= 0 && nextR < gridSize && nextC >= 0 && nextC < gridSize) {
+                        const nextTile = grid[nextR][nextC];
+                        if (nextTile.pipes[move.entryDir]) {
+                            traverseNetwork(nextR, nextC, move.entryDir);
+                        }
+                    }
+                }
+            }
+        }
+
+        function markWinningPath(r, c, exitDir) {
+            let current = grid[r][c];
+            if (current.isWinning) return;
+            current.isWinning = true;
+
+            const trackingDirections = [
+                { r: -1, c: 0, entry: 2, matchingPipe: 0 },
+                { r: 0, c: 1, entry: 3, matchingPipe: 1 },
+                { r: 1, c: 0, entry: 0, matchingPipe: 2 },
+                { r: 0, c: -1, entry: 1, matchingPipe: 3 }
+            ];
+
+            trackingDirections.forEach(dir => {
+                const prevR = r - dir.r;
+                const prevC = c - dir.c;
+                if (prevR >= 0 && prevR < gridSize && prevC >= 0 && prevC < gridSize) {
+                    const neighbor = grid[prevR][prevC];
+                    if (neighbor.isPowered && neighbor.pipes[dir.matchingPipe] && current.pipes[dir.entry]) {
+                        markWinningPath(prevR, prevC, dir.matchingPipe);
+                    }
+                }
+            });
+        }
+
+        function endGame(isWin) {
+            isGameActive = false;
+            clearInterval(gameInterval);
+            if (isWin) {
+                score += (currentLevel * 120) + (timer * 8); 
+                scoreElement.textContent = score;
+                winMessage.textContent = `Clearance level ${currentLevel} bypassed successfully.`;
+                winScreen.classList.add('active');
+            } else {
+                loseScreen.classList.add('active');
+            }
+        }
+
+        function nextLevel() {
+            currentLevel++;
+            initGame();
+        }
+
+        function returnToSetup() {
+            loseScreen.classList.remove('active');
+            setupScreen.classList.add('active');
+        }
+
+        window.addEventListener('resize', () => {
+            const tiles = document.querySelectorAll('.tile');
+            if(tiles.length > 0 && isGameActive) {
+                const tileSize = tiles[0].offsetHeight;
+                srcNode.style.transform = `translateY(${(entryRow * (tileSize + 6)) - (boardElement.offsetHeight/2) + (tileSize/2) + 12}px)`;
+                coreNode.style.transform = `translateY(${(exitRow * (tileSize + 6)) - (boardElement.offsetHeight/2) + (tileSize/2) + 12}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
