@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunday</title>
+    <style>
+        #choco{
+            width :17cm;
+            height : 17cm ;
+            background-color: lavender;
+            border-style : double ;
+            border-width: 1cm;
+            border-radius: 25px;
+            padding: 1.5cm;
+        }
+    </style>
+</head>
+<body>
+    <div id ="choco">
+        mouse over the space
+    </div>
+    <script>
+        const candy = document.getElementById("choco");
+        candy.addEventListener("mouseover",function (){
+            candy.style.backgroundColor = "chocolate";
+            candy.innerText="KAVYA";
+        });
+        candy.addEventListener("mouseout",function (){
+            candy.style.backgroundColor="Lavender"
+        })
+    </script>
+</body>
+</html>
