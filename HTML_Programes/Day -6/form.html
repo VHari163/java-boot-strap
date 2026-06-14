@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Licence form</title>
+    
+</head>
+<body>
+    <h1>DRIVING LICENCE</h1>
+
+    <div>
+        <form id = "details">
+
+            <label> Name </label>
+            <input type="text" id = "name" required ><br><br>
+
+            <label> Email </label>
+            <input type="email" id = "email" required ><br><br>
+
+            <label> Contact </label>
+            <input type="tel" id = "phone" required ><br><br>
+
+            <label>D.O.B</label>
+            <input type="date" id="dob"><br><br>
+
+            <label>Color</label>
+            <input type="color"><br><br>
+
+            <label> Age </label>
+            <input type="number" id = "age" required ><br><br>
+
+            <label> Gender </label>
+            <input type="radio" name = "gender" id = "male" required >Male
+            <input type="radio" name = "gender" id = "female" required >Female
+            <input type="radio" name = "gender" id = "nottomention" required >Not to Mention<br><br>
+
+            <label>Verified Documents</label>
+            <input type="checkbox" name="documents" value="RC book">RC
+            <input type="checkbox" name="documents" value="Insurance">Insurance
+            <input type="checkbox" name="documents" value="Pollution Control">Pollution Control <br><br>
+            
+            <label> Address </label>
+            <input type="text" id ="address" required><br><br>
+            <label>Photo </label>
+            <input type="file" id="image" accept="image/*">
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <h2>Licence Details</h2>
+    <div>
+        <p id = "p1"></p>
+        <p id = "p2"></p>
+        <p id = "p3"></p>
+        <p id = "p4"></p>
+        <p id = "p5"></p>
+        <p id = "p6"></p>
+        <p id = "p7"></p>
+        <p id = "p8"></p>
+        <img id="dp" width="200px" >
+    </div>
+    
+    <script src = "form.js"></script>
+</body>
+</html>
