@@ -118,3 +118,53 @@ Day -6 (Building a web page to fill the Form )
 
 Day -7(Real -World)
         =>were we have build a game as real world games and analised the game logics in js
+
+Day -8(React js)
+
+        Introduction :
+                react is one of the most popular java script language used for moders websites and for web applications
+        what is react js? 
+                react ia a js library used to create user interface
+        who is developed the react just
+                meta facebook
+        key fetures
+                component based archicture 
+                virtual term 
+                reusable code 
+                fast performance
+        why react js popular
+                because it makes web applications posters and reusable peice of using
+        uderstanding jsx 
+                framework will built using the html
+        why should we use react
+                before react supose we need to update one button using normal java script  
+                finds element, changes content, Update data
+                this becomes diffucult in large projects
+                react js is solved, reusable components, faster rendering, easy maintance, better user experience
+        react js archicture
+                react applications is divided into small reusable components 
+                EX : head of the app 
+                header          ex: search bar
+                side bar        ex: menu
+                content         ex: content in the app
+                footer          ex: below details
+        setting up react js project
+                1: instatll node js check version
+                2: create react app 
+                3: moving into the project or enter into the folder
+                4: start applications
+        what is jsx
+                java script xml
+                it allowes us to erite the html like code inside the javascript
+        jsx syntax rules
+                single parent element   
+                        ex: return(
+                                <h1>Hello</h1>
+                                <p>Welcome</p>
+                        )
+
+                        ex: return(
+                        <div>
+                        <h1>hello</h1>
+                        <p>welcome</p>
+                        </div>)
